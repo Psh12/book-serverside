@@ -5,7 +5,7 @@ module.exports = async(req, res, next) => {
     try {
         const jwtToken = req.header('token');
         if(!jwtToken){
-            res.status(403).send('Not Authorized');
+           return res.status(403).json('Not Authorized Please LogIn First');
         }
         const payload = jwt.verify(jwtToken,process.env.jwtSecret);
         req.user = payload.user;
@@ -13,6 +13,6 @@ module.exports = async(req, res, next) => {
         
     } catch (error) {
         console.error(error.message);
-        res.status(403).send('Not Authorized');
+        res.status(403).json('Not Authorized Please LogIn First');
     }
 };

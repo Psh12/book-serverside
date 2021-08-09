@@ -27,19 +27,26 @@ Create table user_book(
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
-Create table Author(
-    author_id uuid DEFAULT uuid_generate_v4(),
-    first_name VARCHAR(255) NOT NULL,
-    last_name VARCHAR(255) NOT NULL,
-    email VARCHAR(255)
-    PRIMARY KEY(author_id),
+Create table Authors(
+    author_id uuid DEFAULT uuid_generate_v4() NOT NULL,
+    author_name VARCHAR(255) NOT NULL,
+    PRIMARY KEY(author_id)
+);
+
+Create table Book_Authors(
+    ba_id uuid DEFAULT uuid_generate_v4() NOT NULL,
+    author_id uuid,
+    book_number isbn13,
+    PRIMARY KEY (author_id, book_number),
+    FOREIGN KEY (author_id) REFERENCES authors(author_id),
+    FOREIGN KEY (book_number) REFERENCES books(book_number)
 );
 
 INSERT INTO users(user_name, user_email, user_password) VALUES ('Henry', 'Henry1@gmail.com','Thegoat');
 
 /* Book table insert Queries*/
-INSERT INTO books(book_number, title, link, synopsis, demographic) VALUES ('978-1535534666','A Study in Scarlet','https://coverart.oclc.org/ImageWebSvc/oclc/+-+380259254_140.jpg?SearchOrder=+-+OT,OS,TN,GO,FA',
-'A Study in Scarlet" is the first published story of one of the most famous literary detectives of all time, Sherlock Holmes. Here Dr. Watson, who has just returned from a war in Afghanistan, meets Sherlock Holmes for the first time when they become flat-mates at the famous 221 B Baker Street', 'Mystery');
+INSERT INTO books(book_number, title, link, synopsis,genre, demographic) VALUES ('978-0-192-81591-0','Oliver Twist','https://images-na.ssl-images-amazon.com/images/I/41CMO-Uh7mS._SX322_BO1,204,203,200_.jpg',
+E'His mother is dead\, so little Oliver Twist is brought up in the workhouse. Beaten and starved, he runs away to London, where he joins Fagin\'s gang of thieves. By chance he also finds good new friends--but can they protect him from people who rob and murder without mercy?','Historical Fiction','Adult');
 
 
 /* user_book Insert Queries*/
