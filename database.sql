@@ -16,6 +16,8 @@ Create table Books(
     title VARCHAR(255) NOT NULL,
     link VARCHAR(255) NOT NULL,
     synopsis VARCHAR(500) NOT NULL,
+    genre VARCHAR(500) NOT NULL,
+    demographic VARCHAR(500) NOT NULL
 );
 
 Create table user_book(
@@ -54,4 +56,16 @@ INSERT INTO user_book(book_number, user_id) VALUES ('978-0-545-21578-7', '679c30
 INSERT INTO user_book(book_number, user_id) VALUES ('978-0-547-92822-7', '679c30bf-57fb-412f-8676-bde171185e77');
 
 /* Query to retrieve the books data for specific users based on user_id */
-select books.book_number, books.title, books.link, books.synopsis from books inner join (select book_number from user_books where user_id = '679c30bf-57fb-412f-8676-bde171185e77') n1 on books.book_number = n1.book_number;
+select books.book_number, books.title, books.link, books.synopsis,books.demographic, books.genre, n1.user_id, n1.ub_id from books inner join (select book_number, user_id, ub_id from user_book where user_id = '679c30bf-57fb-412f-8676-bde171185e77') n1 on books.book_number = n1.book_number;
+
+INSERT INTO book_authors(book_number, author_id) VALUES ('978-0-19-281591-0','76052bd8-5819-4be2-ada7-adedcd76e06d'),('978-2-35294-247-4','a69ae9bc-052f-4665-8db7-5c29eb45d45a'),('978-1-84023-843-3','a69ae9bc-052f-4665-8db7-5c29eb45d45a');
+
+select book_authors.book_number, authors.author_name from book_authors INNER JOIN authors on book_authors.author_id = authors.author_id) n2 on books.book_number = n2.book_number;
+
+
+ select books.book_number, books.title, books.synopsis, books.link, books.demographic, books.genre, n2.author_name from books INNER JOIN (select book_authors.book_number, authors.author_name from book_authors INNER JOIN authors on book_authors.author_id = authors.author_id) n2 on books.book_number = n2.book_number;
+
+
+
+
+ select n2.book_number, n2.title, n2.link, n2.synopsis,n2.demographic, n2.genre, n2.user_id, n2.ub_id, n3.author_name from (select books.book_number, books.title, books.link, books.synopsis,books.demographic, books.genre, n1.user_id, n1.ub_id from books inner join (select book_number, user_id, ub_id from user_book where user_id = '679c30bf-57fb-412f-8676-bde171185e77') n1 on books.book_number = n1.book_number) n2 inner join (select book_authors.book_number, authors.author_name from book_authors INNER JOIN authors on book_authors.author_id = authors.author_id) n3 on n2.book_number = n3.book_number
